@@ -1,0 +1,32 @@
+export const mockData = {
+  tracks: [
+    {
+      category: "nature",
+      is_premium: false,
+      label: "そよ風",
+      sound: require("../../assets/mock/sounds/sample1.wav"),
+      image: require("../../assets/mock/images/sample1-thumbnail.png"),
+    },
+    {
+      category: "nature",
+      is_premium: false,
+      label: "優しい雨の音",
+      sound: require("../../assets/mock/sounds/sample2.wav"),
+      image: require("../../assets/mock/images/sample2-thumbnail.png"),
+    },
+    {
+      category: "nature",
+      is_premium: false,
+      label: "川辺",
+      sound: require("../../assets/mock/sounds/sample3.wav"),
+      image: require("../../assets/mock/images/sample3-thumbnail.png"),
+    },
+    {
+      category: "nature",
+      is_premium: false,
+      label: "激しい雨の音",
+      sound: require("../../assets/mock/sounds/sample4.wav"),
+      image: require("../../assets/mock/images/sample4-thumbnail.png"),
+    },
+  ],
+};
