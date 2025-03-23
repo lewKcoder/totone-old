@@ -34,13 +34,22 @@ export default function HomeScreen() {
   const soundRef = useRef<Audio.Sound | null>(null);
 
   const playSound = async (soundUrl: string) => {
+    if (soundRef.current) {
+      try {
+        await soundRef.current.stopAsync();
+        await soundRef.current.unloadAsync();
+      } catch (error) {
+        setError("既存の音源の停止・解放に失敗しました");
+      }
+    }
+
     try {
       const { sound } = await Audio.Sound.createAsync(
         { uri: soundUrl },
         { shouldPlay: true }
       );
-      setPlaying("playing");
       soundRef.current = sound;
+      setPlaying("playing");
     } catch (error) {
       setError("音源の再生に失敗しました");
     }
