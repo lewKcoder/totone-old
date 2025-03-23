@@ -3,23 +3,16 @@ import {
   StyleSheet,
   View,
   ScrollView,
-  Dimensions,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
-import SegmentControl from "@/components/SegmentControl";
 
 const screenWidth = Dimensions.get("window").width;
 
-export default function HomeScreen() {
+export default function MusicScreen() {
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
-      <SegmentControl lightColor="#4E5D74" darkColor="#ffffff" />
-
-      <View>
-        <ThemedText style={styles.title}>環境音</ThemedText>
-      </View>
-
       <View style={styles.cardContainer}>
         {Array.from({ length: 16 }).map((_, index) => (
           <TouchableOpacity>
@@ -40,11 +33,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   scrollView: {
     padding: 16,
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 18,
-    marginBottom: 14,
   },
   cardContainer: {
     flexDirection: "row",

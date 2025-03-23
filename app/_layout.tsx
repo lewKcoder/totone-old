@@ -9,8 +9,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
-import Entypo from "@expo/vector-icons/Entypo";
-
+import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { View, Image, TouchableOpacity } from "react-native";
 
@@ -33,8 +32,10 @@ export default function RootLayout() {
     return null;
   }
 
+  const theme = colorScheme === "dark" ? DarkTheme : DefaultTheme;
+
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={theme}>
       <Stack>
         <Stack.Screen
           name="(tabs)"
@@ -45,13 +46,13 @@ export default function RootLayout() {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  paddingTop: 50,
+                  paddingTop: 56,
                   paddingLeft: 16,
                   paddingRight: 16,
                 }}
               >
                 <TouchableOpacity>
-                  <Entypo name="menu" size={32} color="black" />
+                  <Entypo name="menu" size={32} color={theme.colors.text} />
                 </TouchableOpacity>
                 <Image
                   source={require("../assets/images/icon-totone.png")}
@@ -59,9 +60,15 @@ export default function RootLayout() {
                     width: 38,
                     height: 27,
                     margin: "auto",
-                    transform: "translateX(-20px)",
                   }}
                 />
+                <TouchableOpacity>
+                  <MaterialCommunityIcons
+                    name="timer-outline"
+                    size={32}
+                    color={theme.colors.text}
+                  />
+                </TouchableOpacity>
               </View>
             ),
           }}
