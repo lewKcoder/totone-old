@@ -4,7 +4,6 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  ImageSourcePropType,
 } from "react-native";
 import { useContext, useEffect, useRef } from "react";
 import { Audio } from "expo-av";
@@ -14,65 +13,20 @@ import { mockData } from "@/assets/mock/data";
 import { Entypo } from "@expo/vector-icons";
 import { Context } from "@/hooks/useProvider";
 import { screenWidth } from "@/constants/ScreenWidth";
+import { useTrackManager } from "@/hooks/useTrackManager";
 
 export default function HomeScreen() {
   const value = useContext(Context);
+  const trackManager = useTrackManager();
 
-  if (!value) {
+  if (!value || !trackManager) {
     return null;
   }
 
-  const { status, playingTrack, setError, setStatus, setPlayingTrack } = value;
+  const { playTrack, pauseTrack, resumeTrack } = trackManager;
+  const { status, playingTrack } = value;
 
   const soundRef = useRef<Audio.Sound | null>(null);
-
-  const playSound = async (
-    soundUrl: number,
-    thumbnail: ImageSourcePropType,
-    label: string
-  ) => {
-    if (soundRef.current) {
-      try {
-        await soundRef.current.stopAsync();
-        await soundRef.current.unloadAsync();
-      } catch (error) {
-        setError("既存の音源の停止・解放に失敗しました");
-      }
-    }
-
-    try {
-      const { sound } = await Audio.Sound.createAsync(soundUrl, {
-        shouldPlay: true,
-      });
-      soundRef.current = sound;
-      setStatus("playing");
-      setPlayingTrack({ thumbnail, label });
-    } catch (error) {
-      setError("音源の再生に失敗しました");
-    }
-  };
-
-  const stopSound = async () => {
-    if (soundRef.current) {
-      try {
-        await soundRef.current.pauseAsync();
-        setStatus("pause");
-      } catch (error) {
-        setError("音源の停止に失敗しました");
-      }
-    }
-  };
-
-  const resumeSound = async () => {
-    if (soundRef.current) {
-      try {
-        await soundRef.current.playAsync();
-        setStatus("playing");
-      } catch (error) {
-        setError("音源の再開に失敗しました");
-      }
-    }
-  };
 
   useEffect(() => {
     // fetch(API_URL)
@@ -99,7 +53,12 @@ export default function HomeScreen() {
         {mockData.tracks.map((item, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => playSound(item.sound, item.image, item.label)}
+            onPress={() =>
+              playTrack(item.sound, soundRef, {
+                thumbnail: item.image,
+                label: item.label,
+              })
+            }
           >
             <View style={styles.card}>
               <Image source={item.image} style={styles.cardImage} />
@@ -117,13 +76,13 @@ export default function HomeScreen() {
 
         <View style={{ width: 24, height: 24 }}>
           {status === "playing" && (
-            <TouchableOpacity onPress={() => stopSound()}>
+            <TouchableOpacity onPress={() => pauseTrack(soundRef)}>
               <Entypo name={"controller-paus"} size={24} color={"white"} />
             </TouchableOpacity>
           )}
 
           {status === "pause" && (
-            <TouchableOpacity onPress={() => resumeSound()}>
+            <TouchableOpacity onPress={() => resumeTrack(soundRef)}>
               <Entypo name={"controller-play"} size={24} color={"white"} />
             </TouchableOpacity>
           )}

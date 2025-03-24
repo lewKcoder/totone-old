@@ -1,36 +1,21 @@
-import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "react-native-reanimated";
 import { ImageSourcePropType } from "react-native";
 import { Provider } from "@/hooks/useProvider";
 import { Header } from "@/components/ui/Header";
-
-SplashScreen.preventAutoHideAsync();
+import { useInitScreen } from "@/hooks/useInitScreen";
 
 export default function RootLayout() {
+  useInitScreen();
+
   const [error, setError] = useState<null | string>(null);
   const [status, setStatus] = useState<null | "playing" | "pause">(null);
   const [playingTrack, setPlayingTrack] = useState<null | {
     thumbnail: ImageSourcePropType;
     label: string;
   }>(null);
-
-  const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
 
   return (
     <Provider

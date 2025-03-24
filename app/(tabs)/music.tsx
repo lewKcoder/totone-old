@@ -4,11 +4,9 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Dimensions,
 } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
-
-const screenWidth = Dimensions.get("window").width;
+import { screenWidth } from "@/constants/ScreenWidth";
 
 export default function MusicScreen() {
   return (
