@@ -1,34 +1,32 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
 import "react-native-reanimated";
-import { ImageSourcePropType } from "react-native";
 import { Provider } from "@/hooks/useProvider";
 import { Header } from "@/components/ui/Header";
 import { useInitScreen } from "@/hooks/useInitScreen";
 import { Modal } from "@/components/ui/Modal";
+import { useStatusStore } from "@/stores/statusStore";
+import { useTrackRefStore } from "@/stores/trackRefStore";
+import { useEffect, useRef } from "react";
+import { Audio } from "expo-av";
 
 export default function RootLayout() {
   useInitScreen();
+  const { status } = useStatusStore();
+  const { setTrackRef } = useTrackRefStore();
 
-  const [error, setError] = useState<null | string>(null);
-  const [status, setStatus] = useState<null | "playing" | "pause">(null);
-  const [playingTrack, setPlayingTrack] = useState<null | {
-    thumbnail: ImageSourcePropType;
-    label: string;
-  }>(null);
+  const $track = useRef<Audio.Sound | null>(null);
+
+  useEffect(() => {
+    if ($track === null) {
+      return;
+    }
+
+    setTrackRef($track);
+  }, []);
 
   return (
-    <Provider
-      value={{
-        error,
-        status,
-        playingTrack,
-        setError,
-        setStatus,
-        setPlayingTrack,
-      }}
-    >
+    <Provider>
       <Stack>
         <Stack.Screen
           name="(tabs)"

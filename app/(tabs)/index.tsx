@@ -5,24 +5,17 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import SegmentControl from "@/components/ui/SegmentControl";
 import { mockData } from "@/assets/mock/data";
 import { screenWidth } from "@/constants/ScreenWidth";
-import { useTrackManager } from "@/hooks/useTrackManager";
-import { Context } from "@/hooks/useProvider";
+import { usePlayTrack } from "@/hooks/usePlayTrack";
+import { useTrackRefStore } from "@/stores/trackRefStore";
 
 export default function HomeScreen() {
-  const value = useContext(Context);
-  const trackManager = useTrackManager();
-
-  if (!value || !trackManager) {
-    return null;
-  }
-
-  const { playTrack } = trackManager;
-  const { $soundRef } = value;
+  const { $track } = useTrackRefStore();
+  const playTrack = usePlayTrack();
 
   useEffect(() => {
     // fetch(API_URL)
@@ -31,8 +24,8 @@ export default function HomeScreen() {
     //   .catch((error) => console.error(error));
 
     return () => {
-      if ($soundRef.current) {
-        $soundRef.current.unloadAsync();
+      if ($track && $track.current) {
+        $track.current.unloadAsync();
       }
     };
   }, []);
@@ -50,15 +43,18 @@ export default function HomeScreen() {
           <TouchableOpacity
             key={index}
             onPress={() =>
-              playTrack(item.sound, {
-                thumbnail: item.image,
-                label: item.label,
+              playTrack({
+                soundUrl: item.sound,
+                playingTrack: {
+                  thumbnail: item.image,
+                  label: item.label,
+                },
               })
             }
           >
             <View style={styles.card}>
               <Image source={item.image} style={styles.cardImage} />
-              <ThemedText>{item.label}</ThemedText>
+              <ThemedText style={styles.label}>{item.label}</ThemedText>
             </View>
           </TouchableOpacity>
         ))}
@@ -92,5 +88,9 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 100,
     borderRadius: 16,
+  },
+  label: {
+    fontSize: 12,
+    paddingTop: 2,
   },
 });

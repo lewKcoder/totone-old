@@ -1,18 +1,16 @@
-import { Audio } from "expo-av";
-import { MutableRefObject } from "react";
+import { useErrorStore } from "@/stores/errorStore";
+import { useStatusStore } from "@/stores/statusStore";
+import { useTrackRefStore } from "@/stores/trackRefStore";
 
-type Util = (params: {
-  setError: (param: string) => void;
-  setStatus: (param: string) => void;
-}) => ($soundRef: MutableRefObject<Audio.Sound | null>) => void;
+export const usePauseTrack = () => {
+  const { $track } = useTrackRefStore();
+  const { setError } = useErrorStore();
+  const { setStatus } = useStatusStore();
 
-export const usePauseTrack: Util = (params) => {
-  const { setError, setStatus } = params;
-
-  return async ($soundRef) => {
-    if ($soundRef.current) {
+  return async () => {
+    if ($track && $track.current) {
       try {
-        await $soundRef.current.pauseAsync();
+        await $track.current.pauseAsync();
         setStatus("pause");
       } catch (error) {
         setError("音源の停止に失敗しました");

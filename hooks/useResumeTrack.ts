@@ -1,19 +1,16 @@
-import { Context } from "@/hooks/useProvider";
-import { Audio } from "expo-av";
-import { MutableRefObject, useContext } from "react";
+import { useErrorStore } from "@/stores/errorStore";
+import { useStatusStore } from "@/stores/statusStore";
+import { useTrackRefStore } from "@/stores/trackRefStore";
 
-type Util = (params: {
-  setError: (param: string) => void;
-  setStatus: (param: string) => void;
-}) => ($soundRef: MutableRefObject<Audio.Sound | null>) => void;
+export const useResumeTrack = () => {
+  const { $track } = useTrackRefStore();
+  const { setError } = useErrorStore();
+  const { setStatus } = useStatusStore();
 
-export const useResumeTrack: Util = (params) => {
-  const { setError, setStatus } = params;
-
-  return async ($soundRef) => {
-    if ($soundRef.current) {
+  return async () => {
+    if ($track && $track.current) {
       try {
-        await $soundRef.current.playAsync();
+        await $track.current.playAsync();
         setStatus("playing");
       } catch (error) {
         setError("音源の再開に失敗しました");

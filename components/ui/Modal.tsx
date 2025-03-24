@@ -8,24 +8,19 @@ import {
 import { Entypo } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
 import { screenWidth } from "@/constants/ScreenWidth";
-import { useContext } from "react";
-import { useTrackManager } from "@/hooks/useTrackManager";
-import { Context } from "@/hooks/useProvider";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { BlurView } from "expo-blur";
+import { usePlayingTrackStore } from "@/stores/playingTrackStore";
+import { usePauseTrack } from "@/hooks/usePauseTrack";
+import { useResumeTrack } from "@/hooks/useResumeTrack";
+import { useStatusStore } from "@/stores/statusStore";
 
 export const Modal = () => {
-  const value = useContext(Context);
   const theme = useColorScheme();
-
-  const trackManager = useTrackManager();
-
-  if (!value || !trackManager) {
-    return null;
-  }
-
-  const { pauseTrack, resumeTrack } = trackManager;
-  const { status, playingTrack, $soundRef } = value;
+  const { status } = useStatusStore();
+  const { playingTrack } = usePlayingTrackStore();
+  const pauseTrack = usePauseTrack();
+  const resumeTrack = useResumeTrack();
 
   return (
     <View
@@ -48,13 +43,13 @@ export const Modal = () => {
 
         <View style={{ width: 24, height: 24 }}>
           {status === "playing" && (
-            <TouchableOpacity onPress={() => pauseTrack($soundRef)}>
+            <TouchableOpacity onPress={() => pauseTrack()}>
               <Entypo name={"controller-paus"} size={24} color={"white"} />
             </TouchableOpacity>
           )}
 
           {status === "pause" && (
-            <TouchableOpacity onPress={() => resumeTrack($soundRef)}>
+            <TouchableOpacity onPress={() => resumeTrack()}>
               <Entypo name={"controller-play"} size={24} color={"white"} />
             </TouchableOpacity>
           )}
