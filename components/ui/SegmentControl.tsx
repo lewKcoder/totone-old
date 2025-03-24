@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
-import { ThemedText } from "./ThemedText";
+import { ThemedText } from "../ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
 const tabs = [
   { label: "全て", icon: "list" as const },
-  { label: "環境音", icon: "sound" as const },
-  { label: "人工", icon: "flash" as const },
+  { label: "環境音", icon: "leaf" as const },
+  { label: "人工", icon: "emoji-happy" as const },
   { label: "お気に入り", icon: "heart" as const },
 ];
 
@@ -19,10 +19,10 @@ export default function SegmentControl({
   darkColor: string;
 }) {
   const [selectedTab, setSelectedTab] = useState(0);
-  const themeColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    "text"
-  );
+  const themeColor = useThemeColor("text", {
+    light: lightColor,
+    dark: darkColor,
+  });
 
   return (
     <View style={styles.container}>

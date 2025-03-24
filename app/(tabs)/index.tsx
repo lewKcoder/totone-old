@@ -3,37 +3,34 @@ import {
   StyleSheet,
   View,
   ScrollView,
-  Dimensions,
   TouchableOpacity,
   ImageSourcePropType,
 } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Audio } from "expo-av";
 import { ThemedText } from "@/components/ThemedText";
-import SegmentControl from "@/components/SegmentControl";
+import SegmentControl from "@/components/ui/SegmentControl";
 import { mockData } from "@/assets/mock/data";
-import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
-
-const screenWidth = Dimensions.get("window").width;
-
-type DataItem = {
-  tracks: {
-    category: string;
-    is_premium: boolean;
-    label: string;
-    sound: string;
-    image: ImageSourcePropType;
-  }[];
-};
+import { Entypo } from "@expo/vector-icons";
+import { Context } from "@/hooks/useProvider";
+import { screenWidth } from "@/constants/ScreenWidth";
 
 export default function HomeScreen() {
-  const [error, setError] = useState<null | string>(null);
-  const [data, setData] = useState<DataItem>(mockData);
-  const [playing, setPlaying] = useState<null | "playing" | "pause">(null);
+  const value = useContext(Context);
+
+  if (!value) {
+    return null;
+  }
+
+  const { status, playingTrack, setError, setStatus, setPlayingTrack } = value;
 
   const soundRef = useRef<Audio.Sound | null>(null);
 
-  const playSound = async (soundUrl: string) => {
+  const playSound = async (
+    soundUrl: number,
+    thumbnail: ImageSourcePropType,
+    label: string
+  ) => {
     if (soundRef.current) {
       try {
         await soundRef.current.stopAsync();
@@ -44,12 +41,12 @@ export default function HomeScreen() {
     }
 
     try {
-      const { sound } = await Audio.Sound.createAsync(
-        { uri: soundUrl },
-        { shouldPlay: true }
-      );
+      const { sound } = await Audio.Sound.createAsync(soundUrl, {
+        shouldPlay: true,
+      });
       soundRef.current = sound;
-      setPlaying("playing");
+      setStatus("playing");
+      setPlayingTrack({ thumbnail, label });
     } catch (error) {
       setError("音源の再生に失敗しました");
     }
@@ -59,7 +56,7 @@ export default function HomeScreen() {
     if (soundRef.current) {
       try {
         await soundRef.current.pauseAsync();
-        setPlaying("pause");
+        setStatus("pause");
       } catch (error) {
         setError("音源の停止に失敗しました");
       }
@@ -70,7 +67,7 @@ export default function HomeScreen() {
     if (soundRef.current) {
       try {
         await soundRef.current.playAsync();
-        setPlaying("playing");
+        setStatus("playing");
       } catch (error) {
         setError("音源の再開に失敗しました");
       }
@@ -90,8 +87,6 @@ export default function HomeScreen() {
     };
   }, []);
 
-  console.log(data);
-
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
       <SegmentControl lightColor="#4E5D74" darkColor="#ffffff" />
@@ -101,8 +96,11 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.cardContainer}>
-        {data.tracks.map((item, index) => (
-          <TouchableOpacity key={index} onPress={() => playSound(item.sound)}>
+        {mockData.tracks.map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => playSound(item.sound, item.image, item.label)}
+          >
             <View style={styles.card}>
               <Image source={item.image} style={styles.cardImage} />
               <ThemedText>{item.label}</ThemedText>
@@ -111,23 +109,26 @@ export default function HomeScreen() {
         ))}
       </View>
 
-      {playing && (
-        <View style={styles.modal}>
-          {playing === "playing" && (
-            <TouchableOpacity onPress={() => stopSound()}>
-              <FontAwesome5 name="pause-circle" size={24} color="white" />
-            </TouchableOpacity>
-          )}
-
-          {playing === "pause" && (
-            <TouchableOpacity onPress={() => resumeSound()}>
-              <FontAwesome6 name="circle-play" size={24} color="white" />
-            </TouchableOpacity>
-          )}
-
-          <ThemedText>{playing}</ThemedText>
+      <View style={styles.modal}>
+        <View style={styles.label}>
+          <Image source={playingTrack?.thumbnail} style={styles.thumbnail} />
+          <ThemedText>{playingTrack?.label}</ThemedText>
         </View>
-      )}
+
+        <View style={{ width: 24, height: 24 }}>
+          {status === "playing" && (
+            <TouchableOpacity onPress={() => stopSound()}>
+              <Entypo name={"controller-paus"} size={24} color={"white"} />
+            </TouchableOpacity>
+          )}
+
+          {status === "pause" && (
+            <TouchableOpacity onPress={() => resumeSound()}>
+              <Entypo name={"controller-play"} size={24} color={"white"} />
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
     </ScrollView>
   );
 }
@@ -161,7 +162,24 @@ const styles = StyleSheet.create({
     width: screenWidth - 32,
     backgroundColor: "grey",
     bottom: -100,
-    padding: 24,
+    left: 16,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 24,
+    paddingRight: 24,
     borderRadius: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  label: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  thumbnail: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
   },
 });
