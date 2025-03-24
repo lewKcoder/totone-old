@@ -1,9 +1,9 @@
-import { Context } from "@/hooks/useProvider";
 import { Audio } from "expo-av";
 import { MutableRefObject, useContext } from "react";
 import { ImageSourcePropType } from "react-native";
 
 type Util = (params: {
+  $soundRef: MutableRefObject<Audio.Sound | null>;
   setError: (param: string) => void;
   setStatus: (param: string) => void;
   setPlayingTrack: (param: {
@@ -12,7 +12,6 @@ type Util = (params: {
   }) => void;
 }) => (
   soundUrl: number,
-  $soundRef: MutableRefObject<Audio.Sound | null>,
   playingTrack: {
     thumbnail: ImageSourcePropType;
     label: string;
@@ -20,9 +19,9 @@ type Util = (params: {
 ) => Promise<void>;
 
 export const usePlayTrack: Util = (params) => {
-  const { setError, setPlayingTrack, setStatus } = params;
+  const { $soundRef, setError, setPlayingTrack, setStatus } = params;
 
-  return async (soundUrl, $soundRef, playingTrack) => {
+  return async (soundUrl, playingTrack) => {
     if ($soundRef.current) {
       try {
         await $soundRef.current.stopAsync();

@@ -13,6 +13,7 @@ export const Header = () => {
         paddingTop: 56,
         paddingLeft: 16,
         paddingRight: 16,
+        paddingBottom: 16,
       }}
     >
       <TouchableOpacity>

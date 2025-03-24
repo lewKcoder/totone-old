@@ -17,10 +17,15 @@ export const useTrackManager: Util = () => {
     return null;
   }
 
-  const { setError, setPlayingTrack, setStatus } = value;
+  const { $soundRef, setError, setPlayingTrack, setStatus } = value;
 
   return {
-    playTrack: usePlayTrack({ setError, setPlayingTrack, setStatus }),
+    playTrack: usePlayTrack({
+      $soundRef,
+      setError,
+      setPlayingTrack,
+      setStatus,
+    }),
     pauseTrack: usePauseTrack({ setError, setStatus }),
     resumeTrack: useResumeTrack({ setError, setStatus }),
   };

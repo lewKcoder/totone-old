@@ -6,6 +6,7 @@ import { ImageSourcePropType } from "react-native";
 import { Provider } from "@/hooks/useProvider";
 import { Header } from "@/components/ui/Header";
 import { useInitScreen } from "@/hooks/useInitScreen";
+import { Modal } from "@/components/ui/Modal";
 
 export default function RootLayout() {
   useInitScreen();
@@ -38,6 +39,9 @@ export default function RootLayout() {
         />
         <Stack.Screen name="+not-found" />
       </Stack>
+
+      {status && <Modal />}
+
       <StatusBar style="auto" />
     </Provider>
   );

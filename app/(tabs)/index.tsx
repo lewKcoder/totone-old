@@ -5,15 +5,13 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { useContext, useEffect, useRef } from "react";
-import { Audio } from "expo-av";
+import { useContext, useEffect } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import SegmentControl from "@/components/ui/SegmentControl";
 import { mockData } from "@/assets/mock/data";
-import { Entypo } from "@expo/vector-icons";
-import { Context } from "@/hooks/useProvider";
 import { screenWidth } from "@/constants/ScreenWidth";
 import { useTrackManager } from "@/hooks/useTrackManager";
+import { Context } from "@/hooks/useProvider";
 
 export default function HomeScreen() {
   const value = useContext(Context);
@@ -23,10 +21,8 @@ export default function HomeScreen() {
     return null;
   }
 
-  const { playTrack, pauseTrack, resumeTrack } = trackManager;
-  const { status, playingTrack } = value;
-
-  const soundRef = useRef<Audio.Sound | null>(null);
+  const { playTrack } = trackManager;
+  const { $soundRef } = value;
 
   useEffect(() => {
     // fetch(API_URL)
@@ -35,8 +31,8 @@ export default function HomeScreen() {
     //   .catch((error) => console.error(error));
 
     return () => {
-      if (soundRef.current) {
-        soundRef.current.unloadAsync();
+      if ($soundRef.current) {
+        $soundRef.current.unloadAsync();
       }
     };
   }, []);
@@ -54,7 +50,7 @@ export default function HomeScreen() {
           <TouchableOpacity
             key={index}
             onPress={() =>
-              playTrack(item.sound, soundRef, {
+              playTrack(item.sound, {
                 thumbnail: item.image,
                 label: item.label,
               })
@@ -67,34 +63,15 @@ export default function HomeScreen() {
           </TouchableOpacity>
         ))}
       </View>
-
-      <View style={styles.modal}>
-        <View style={styles.label}>
-          <Image source={playingTrack?.thumbnail} style={styles.thumbnail} />
-          <ThemedText>{playingTrack?.label}</ThemedText>
-        </View>
-
-        <View style={{ width: 24, height: 24 }}>
-          {status === "playing" && (
-            <TouchableOpacity onPress={() => pauseTrack(soundRef)}>
-              <Entypo name={"controller-paus"} size={24} color={"white"} />
-            </TouchableOpacity>
-          )}
-
-          {status === "pause" && (
-            <TouchableOpacity onPress={() => resumeTrack(soundRef)}>
-              <Entypo name={"controller-play"} size={24} color={"white"} />
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   scrollView: {
-    padding: 16,
+    paddingRight: 16,
+    paddingLeft: 16,
+    paddingBottom: 16,
   },
   title: {
     fontWeight: "bold",
@@ -115,30 +92,5 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 100,
     borderRadius: 16,
-  },
-  modal: {
-    position: "absolute",
-    width: screenWidth - 32,
-    backgroundColor: "grey",
-    bottom: -100,
-    left: 16,
-    paddingTop: 8,
-    paddingBottom: 8,
-    paddingLeft: 24,
-    paddingRight: 24,
-    borderRadius: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  label: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
-  thumbnail: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
   },
 });
