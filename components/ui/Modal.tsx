@@ -1,104 +1,96 @@
+import React, { useState } from "react";
 import {
-  Image,
-  View,
+  Modal as ModalImported,
   TouchableOpacity,
+  View,
+  Text,
   StyleSheet,
-  Platform,
+  Image,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import { ThemedText } from "../ThemedText";
-import { screenWidth } from "@/constants/ScreenSize";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { BlurView } from "expo-blur";
-import { usePlayingTrackStore } from "@/stores/playingTrackStore";
-import { usePauseTrack } from "@/hooks/usePauseTrack";
-import { useResumeTrack } from "@/hooks/useResumeTrack";
-import { useStatusStore } from "@/stores/statusStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useColorSchemeStore } from "@/stores/colorSchemeStore";
 
 export default function Modal() {
-  const themeScheme = useColorScheme();
   const theme = useThemeColor("tabIconDefault");
-  const { status } = useStatusStore();
-  const { playingTrack } = usePlayingTrackStore();
-  const pauseTrack = usePauseTrack();
-  const resumeTrack = useResumeTrack();
+  const { colorScheme, setColorScheme } = useColorSchemeStore();
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openMenu = () => setModalVisible(true);
+  const closeMenu = () => setModalVisible(false);
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          bottom: Platform.OS === "ios" ? 90 : 57,
-        },
-      ]}
-    >
-      <BlurView
-        intensity={80}
-        tint={themeScheme as "dark" | "light"}
-        style={styles.content}
+    <View>
+      <TouchableOpacity onPress={openMenu}>
+        <Entypo name="menu" size={32} color={theme} />
+      </TouchableOpacity>
+
+      <ModalImported
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={closeMenu}
       >
-        <View style={styles.track}>
-          <Image source={playingTrack?.thumbnail} style={styles.thumbnail} />
-          <ThemedText>{playingTrack?.label}</ThemedText>
-        </View>
+        <View style={styles.modalContainer}>
+          <Image
+            source={require("../../assets/images/icon-totone.png")}
+            style={styles.logo}
+          />
 
-        <View
-          style={{
-            width: 32,
-            height: 32,
-            borderColor: theme,
-            borderWidth: 2,
-            borderRadius: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {status === "playing" && (
-            <TouchableOpacity onPress={() => pauseTrack()}>
-              <Entypo name={"controller-paus"} size={20} color={theme} />
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => {
+              setColorScheme(colorScheme === "dark" ? "light" : "dark");
+              closeMenu();
+            }}
+          >
+            <Text style={styles.menuItemText}>ライト/ダークモード切替</Text>
+          </TouchableOpacity>
 
-          {status === "pause" && (
-            <TouchableOpacity onPress={() => resumeTrack()}>
-              <Entypo name={"controller-play"} size={24} color={theme} />
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
+            <Text style={styles.menuItemText}>プラン画面</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
+            <Text style={styles.menuItemText}>お問い合わせ</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.closeButton} onPress={closeMenu}>
+            <Text style={styles.closeButtonText}>閉じる</Text>
+          </TouchableOpacity>
         </View>
-      </BlurView>
+      </ModalImported>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 20,
-    position: "absolute",
-    left: 16,
-    zIndex: 1,
-    overflow: "hidden",
-  },
-  content: {
-    width: screenWidth - 32,
-    paddingTop: 8,
-    paddingBottom: 8,
-    paddingLeft: 24,
-    paddingRight: 24,
-    borderRadius: 16,
-    flexDirection: "row",
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "space-between",
+    padding: 20,
   },
-  track: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
+  logo: {
+    width: 38,
+    height: 27,
+    marginBottom: 33,
   },
-  thumbnail: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
+  menuItem: {
+    marginVertical: 15,
+  },
+  menuItemText: {
+    fontSize: 18,
+    color: "#333",
+  },
+  closeButton: {
+    marginTop: 30,
+    alignSelf: "center",
+  },
+  closeButtonText: {
+    fontSize: 16,
+    color: "blue",
   },
 });

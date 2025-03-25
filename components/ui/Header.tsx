@@ -1,14 +1,14 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import SideMenu from "./SlideMenu";
+import Modal from "./Modal";
 
 export const Header = () => {
   const theme = useThemeColor("tabIconDefault");
 
   return (
     <View style={styles.container}>
-      <SideMenu />
+      <Modal />
 
       <Image
         source={require("../../assets/images/icon-totone.png")}

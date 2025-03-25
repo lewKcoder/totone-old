@@ -4,11 +4,11 @@ import { Platform } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { Fontisto, MaterialIcons } from "@expo/vector-icons";
+import { useColorSchemeStore } from "@/stores/colorSchemeStore";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useColorSchemeStore();
 
   return (
     <Tabs

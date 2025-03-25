@@ -8,7 +8,7 @@ import { useStatusStore } from "@/stores/statusStore";
 import { useTrackRefStore } from "@/stores/trackRefStore";
 import { useEffect, useRef } from "react";
 import { Audio } from "expo-av";
-import Modal from "@/components/ui/Modal";
+import TrackToast from "@/components/ui/TrackToast";
 
 export default function RootLayout() {
   useInitScreen();
@@ -38,7 +38,7 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
 
-      {status && <Modal />}
+      {status && <TrackToast />}
 
       <StatusBar style="auto" />
     </Provider>

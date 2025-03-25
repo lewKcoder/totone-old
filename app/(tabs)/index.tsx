@@ -13,11 +13,13 @@ import { screenWidth } from "@/constants/ScreenSize";
 import { usePlayTrack } from "@/hooks/usePlayTrack";
 import { useTrackRefStore } from "@/stores/trackRefStore";
 import { useFilterStore } from "@/stores/filterStore";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export default function HomeScreen() {
   const { $track } = useTrackRefStore();
   const playTrack = usePlayTrack();
   const { filter } = useFilterStore();
+  const themeColor = useThemeColor("text");
 
   useEffect(() => {
     // fetch(API_URL)
@@ -61,7 +63,10 @@ export default function HomeScreen() {
           >
             <View style={styles.card}>
               <Image source={item.image} style={styles.cardImage} />
-              <ThemedText style={styles.label}>{item.label}</ThemedText>
+
+              <ThemedText style={[styles.label, { color: themeColor }]}>
+                {item.label}
+              </ThemedText>
             </View>
           </TouchableOpacity>
         ))}
