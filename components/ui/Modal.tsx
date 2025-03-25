@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
-import { screenWidth } from "@/constants/ScreenWidth";
+import { screenWidth } from "@/constants/ScreenSize";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { BlurView } from "expo-blur";
 import { usePlayingTrackStore } from "@/stores/playingTrackStore";

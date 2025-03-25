@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import SegmentControl from "@/components/ui/SegmentControl";
 import { mockData } from "@/assets/mock/data";
-import { screenWidth } from "@/constants/ScreenWidth";
+import { screenWidth } from "@/constants/ScreenSize";
 import { usePlayTrack } from "@/hooks/usePlayTrack";
 import { useTrackRefStore } from "@/stores/trackRefStore";
 import { useFilterStore } from "@/stores/filterStore";

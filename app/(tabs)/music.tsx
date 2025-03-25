@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
-import { screenWidth } from "@/constants/ScreenWidth";
+import { screenWidth } from "@/constants/ScreenSize";
 
 export default function MusicScreen() {
   return (
