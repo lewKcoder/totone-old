@@ -4,11 +4,11 @@ import "react-native-reanimated";
 import { Provider } from "@/hooks/useProvider";
 import { Header } from "@/components/ui/Header";
 import { useInitScreen } from "@/hooks/useInitScreen";
-import { Modal } from "@/components/ui/Modal";
 import { useStatusStore } from "@/stores/statusStore";
 import { useTrackRefStore } from "@/stores/trackRefStore";
 import { useEffect, useRef } from "react";
 import { Audio } from "expo-av";
+import Modal from "@/components/ui/Modal";
 
 export default function RootLayout() {
   useInitScreen();

@@ -1,6 +1,9 @@
 import { create } from "zustand";
 
-type State = "all" | "nature" | "artificial" | "favorite";
+type State = {
+  key: "all" | "nature" | "artificial";
+  label: string;
+};
 
 type FilterState = {
   filter: State;
@@ -8,6 +11,9 @@ type FilterState = {
 };
 
 export const useFilterStore = create<FilterState>((set) => ({
-  filter: "all",
+  filter: {
+    key: "all",
+    label: "全て",
+  },
   setFilter: (filter) => set({ filter }),
 }));

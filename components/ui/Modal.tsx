@@ -14,9 +14,11 @@ import { usePlayingTrackStore } from "@/stores/playingTrackStore";
 import { usePauseTrack } from "@/hooks/usePauseTrack";
 import { useResumeTrack } from "@/hooks/useResumeTrack";
 import { useStatusStore } from "@/stores/statusStore";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
-export const Modal = () => {
-  const theme = useColorScheme();
+export default function Modal() {
+  const themeScheme = useColorScheme();
+  const theme = useThemeColor("tabIconDefault");
   const { status } = useStatusStore();
   const { playingTrack } = usePlayingTrackStore();
   const pauseTrack = usePauseTrack();
@@ -32,8 +34,8 @@ export const Modal = () => {
       ]}
     >
       <BlurView
-        intensity={56}
-        tint={theme as "dark" | "light"}
+        intensity={80}
+        tint={themeScheme as "dark" | "light"}
         style={styles.content}
       >
         <View style={styles.track}>
@@ -41,23 +43,34 @@ export const Modal = () => {
           <ThemedText>{playingTrack?.label}</ThemedText>
         </View>
 
-        <View style={{ width: 24, height: 24 }}>
+        <View
+          style={{
+            width: 32,
+            height: 32,
+            borderColor: theme,
+            borderWidth: 2,
+            borderRadius: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           {status === "playing" && (
             <TouchableOpacity onPress={() => pauseTrack()}>
-              <Entypo name={"controller-paus"} size={24} color={"white"} />
+              <Entypo name={"controller-paus"} size={20} color={theme} />
             </TouchableOpacity>
           )}
 
           {status === "pause" && (
             <TouchableOpacity onPress={() => resumeTrack()}>
-              <Entypo name={"controller-play"} size={24} color={"white"} />
+              <Entypo name={"controller-play"} size={24} color={theme} />
             </TouchableOpacity>
           )}
         </View>
       </BlurView>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

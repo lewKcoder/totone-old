@@ -3,7 +3,7 @@ import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, Image, TouchableOpacity } from "react-native";
 
 export const Header = () => {
-  const theme = useThemeColor("text");
+  const theme = useThemeColor("tabIconDefault");
 
   return (
     <View

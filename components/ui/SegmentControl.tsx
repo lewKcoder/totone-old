@@ -3,26 +3,13 @@ import { View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import { ThemedText } from "../ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { useFilterStore } from "@/stores/filterStore";
+import { tabs } from "@/constants/TabMenu";
 
-const tabs = [
-  { label: "全て", icon: "list" as const },
-  { label: "環境音", icon: "leaf" as const },
-  { label: "人工", icon: "emoji-happy" as const },
-  { label: "お気に入り", icon: "heart" as const },
-];
-
-export default function SegmentControl({
-  lightColor,
-  darkColor,
-}: {
-  lightColor: string;
-  darkColor: string;
-}) {
+export default function SegmentControl() {
   const [selectedTab, setSelectedTab] = useState(0);
-  const themeColor = useThemeColor("text", {
-    light: lightColor,
-    dark: darkColor,
-  });
+  const themeColor = useThemeColor("tabIconDefault");
+  const { setFilter } = useFilterStore();
 
   return (
     <View style={styles.container}>
@@ -32,7 +19,13 @@ export default function SegmentControl({
             <TouchableOpacity
               key={index}
               style={[styles.tab, selectedTab === index && styles.selectedTab]}
-              onPress={() => setSelectedTab(index)}
+              onPress={() => {
+                setSelectedTab(index);
+                setFilter({
+                  key: tab.filter,
+                  label: tab.label,
+                });
+              }}
             >
               <Entypo
                 name={tab.icon}

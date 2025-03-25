@@ -12,10 +12,12 @@ import { mockData } from "@/assets/mock/data";
 import { screenWidth } from "@/constants/ScreenWidth";
 import { usePlayTrack } from "@/hooks/usePlayTrack";
 import { useTrackRefStore } from "@/stores/trackRefStore";
+import { useFilterStore } from "@/stores/filterStore";
 
 export default function HomeScreen() {
   const { $track } = useTrackRefStore();
   const playTrack = usePlayTrack();
+  const { filter } = useFilterStore();
 
   useEffect(() => {
     // fetch(API_URL)
@@ -30,16 +32,21 @@ export default function HomeScreen() {
     };
   }, []);
 
+  const filteredData =
+    filter.key === "all"
+      ? mockData.tracks
+      : mockData.tracks.filter((item) => item.category === filter.key);
+
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
-      <SegmentControl lightColor="#4E5D74" darkColor="#ffffff" />
+      <SegmentControl />
 
       <View>
-        <ThemedText style={styles.title}>環境音</ThemedText>
+        <ThemedText style={styles.title}>{filter.label}</ThemedText>
       </View>
 
       <View style={styles.cardContainer}>
-        {mockData.tracks.map((item, index) => (
+        {filteredData.map((item, index) => (
           <TouchableOpacity
             key={index}
             onPress={() =>
@@ -67,7 +74,7 @@ const styles = StyleSheet.create({
   scrollView: {
     paddingRight: 16,
     paddingLeft: 16,
-    paddingBottom: 16,
+    paddingBottom: 124,
   },
   title: {
     fontWeight: "bold",
@@ -78,7 +85,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    rowGap: 16,
+    rowGap: 12,
   },
   card: {
     width: screenWidth / 3 - 24,
