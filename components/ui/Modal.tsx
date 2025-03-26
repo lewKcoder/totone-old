@@ -3,17 +3,20 @@ import {
   Modal as ModalImported,
   TouchableOpacity,
   View,
-  Text,
   StyleSheet,
-  Image,
+  Switch,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useColorSchemeStore } from "@/stores/colorSchemeStore";
+import { Feather, FontAwesome, AntDesign } from "@expo/vector-icons";
+import { ThemedText } from "../ThemedText";
 
 export default function Modal() {
-  const theme = useThemeColor("tabIconDefault");
+  const iconTheme = useThemeColor("tabIconDefault");
+  const backgroundTheme = useThemeColor("background");
   const { colorScheme, setColorScheme } = useColorSchemeStore();
+  const isLightMode = colorScheme === "light";
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -23,7 +26,7 @@ export default function Modal() {
   return (
     <View>
       <TouchableOpacity onPress={openMenu}>
-        <Entypo name="menu" size={32} color={theme} />
+        <Entypo name="menu" size={32} color={iconTheme} />
       </TouchableOpacity>
 
       <ModalImported
@@ -32,33 +35,50 @@ export default function Modal() {
         visible={modalVisible}
         onRequestClose={closeMenu}
       >
-        <View style={styles.modalContainer}>
-          <Image
-            source={require("../../assets/images/icon-totone.png")}
-            style={styles.logo}
-          />
+        <View
+          style={[styles.modalContainer, { backgroundColor: backgroundTheme }]}
+        >
+          <View style={styles.modalContent}>
+            <View style={styles.modeToggle}>
+              <Feather
+                name="moon"
+                size={32}
+                color={!isLightMode ? "orange" : "#3e3e3e"}
+              />
 
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => {
-              setColorScheme(colorScheme === "dark" ? "light" : "dark");
-              closeMenu();
-            }}
-          >
-            <Text style={styles.menuItemText}>ライト/ダークモード切替</Text>
-          </TouchableOpacity>
+              <Switch
+                trackColor={{ false: "#3e3e3e", true: "#3e3e3e" }}
+                thumbColor={isLightMode ? "#fff" : "#fff"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={() =>
+                  setColorScheme(isLightMode ? "dark" : "light")
+                }
+                value={isLightMode}
+              />
 
-          <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
-            <Text style={styles.menuItemText}>プラン画面</Text>
-          </TouchableOpacity>
+              <Feather
+                name="sun"
+                size={32}
+                color={isLightMode ? "red" : "#3e3e3e"}
+              />
+            </View>
 
-          <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
-            <Text style={styles.menuItemText}>お問い合わせ</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
+              <FontAwesome name="inbox" size={28} color={iconTheme} />
 
-          <TouchableOpacity style={styles.closeButton} onPress={closeMenu}>
-            <Text style={styles.closeButtonText}>閉じる</Text>
-          </TouchableOpacity>
+              <ThemedText style={styles.menuItemText}>プラン画面</ThemedText>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
+              <Feather name="mail" size={24} color={iconTheme} />
+
+              <ThemedText style={styles.menuItemText}>お問い合わせ</ThemedText>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.closeButton} onPress={closeMenu}>
+              <AntDesign name="arrowdown" size={24} color={iconTheme} />
+            </TouchableOpacity>
+          </View>
         </View>
       </ModalImported>
     </View>
@@ -67,30 +87,39 @@ export default function Modal() {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    flex: 1,
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
-    justifyContent: "center",
-    alignItems: "center",
+    height: "88%",
+    marginTop: "auto",
+    borderTopEndRadius: 24,
+    borderTopStartRadius: 24,
+    alignItems: "baseline",
+  },
+  modalContent: {
     padding: 20,
+    justifyContent: "center",
+    alignItems: "baseline",
+    gap: 32,
+    margin: "auto",
   },
   logo: {
     width: 38,
     height: 27,
     marginBottom: 33,
   },
-  menuItem: {
-    marginVertical: 15,
+  modeToggle: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
   },
   menuItemText: {
-    fontSize: 18,
-    color: "#333",
+    fontSize: 16,
+  },
+  menuItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
   },
   closeButton: {
-    marginTop: 30,
+    marginTop: 80,
     alignSelf: "center",
-  },
-  closeButtonText: {
-    fontSize: 16,
-    color: "blue",
   },
 });
