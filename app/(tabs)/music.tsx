@@ -12,14 +12,14 @@ import { mockData } from "@/assets/mock/data";
 import { screenWidth } from "@/constants/ScreenSize";
 import { usePlayTrack } from "@/hooks/usePlayTrack";
 import { useTrackRefStore } from "@/stores/trackRefStore";
-import { useFilterStore } from "@/stores/filterStore";
+import { useMusicFilterStore } from "@/stores/musicFilterStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { musicTabs } from "@/constants/TabMenu";
 
 export default function MusicScreen() {
   const { $track } = useTrackRefStore();
   const playTrack = usePlayTrack();
-  const { filter } = useFilterStore();
+  const { musicFilter, setMusicFilter } = useMusicFilterStore();
   const themeColor = useThemeColor("text");
 
   useEffect(() => {
@@ -36,16 +36,16 @@ export default function MusicScreen() {
   }, []);
 
   const filteredData =
-    filter.key === "all"
+    musicFilter.key === "all"
       ? mockData.tracks
-      : mockData.tracks.filter((item) => item.category === filter.key);
+      : mockData.tracks.filter((item) => item.category === musicFilter.key);
 
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
-      <SegmentControl tabs={musicTabs} />
+      <SegmentControl tabs={musicTabs} setFilter={setMusicFilter} />
 
       <View>
-        <ThemedText style={styles.title}>{filter.label}</ThemedText>
+        <ThemedText style={styles.title}>{musicFilter.label}</ThemedText>
       </View>
 
       <View style={styles.cardContainer}>

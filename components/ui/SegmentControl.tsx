@@ -3,14 +3,17 @@ import { View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { useFilterStore } from "@/stores/filterStore";
+import { State as SoundFilterState } from "@/stores/soundFilterStore";
+import { State as MusicFilterState } from "@/stores/musicFilterStore";
 import { Tab } from "@/constants/TabMenu";
 
-export default function SegmentControl(props: { tabs: Tab[] }) {
-  const { tabs } = props;
+export default function SegmentControl(props: {
+  tabs: Tab[];
+  setFilter: (soundFilter: SoundFilterState | MusicFilterState) => void;
+}) {
+  const { tabs, setFilter } = props;
   const [selectedTab, setSelectedTab] = useState(0);
   const themeColor = useThemeColor("tabIconDefault");
-  const { setFilter } = useFilterStore();
 
   return (
     <View style={styles.container}>
