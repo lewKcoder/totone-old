@@ -15,6 +15,8 @@ import { useColorSchemeStore } from "@/stores/colorSchemeStore";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
 import { useRouter } from "expo-router";
+import { languages } from "@/constants/Language";
+import { useLanguageStore } from "@/stores/languageStore";
 
 export default function Modal() {
   const { colorScheme, setColorScheme } = useColorSchemeStore();
@@ -22,6 +24,7 @@ export default function Modal() {
   const backgroundTheme = useThemeColor("background");
   const isLightMode = colorScheme === "light";
 
+  const { language, setLanguage } = useLanguageStore();
   const [modalVisible, setModalVisible] = useState(false);
   const screenWidth = Dimensions.get("window").width;
   const slideAnim = useRef(new Animated.Value(-screenWidth)).current;
@@ -132,7 +135,7 @@ export default function Modal() {
                 </View>
 
                 <TouchableOpacity onPress={handlePressPlan}>
-                  <View style={styles.menuItem}>
+                  <View style={[styles.menuItem, { paddingBottom: 4 }]}>
                     <MaterialCommunityIcons
                       name="inbox-full"
                       size={22}
@@ -142,7 +145,7 @@ export default function Modal() {
                     <ThemedText style={styles.menuItemText}>プラン</ThemedText>
                   </View>
 
-                  <ThemedText style={[styles.description, { paddingTop: 4 }]}>
+                  <ThemedText style={styles.description}>
                     あなたの現在のプラン：プレミアム
                   </ThemedText>
                   <ThemedText style={styles.description}>
@@ -150,14 +153,39 @@ export default function Modal() {
                   </ThemedText>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
-                  <MaterialCommunityIcons
-                    name="earth"
-                    size={22}
-                    color={iconTheme}
-                  />
-                  <ThemedText style={styles.menuItemText}>言語</ThemedText>
-                </TouchableOpacity>
+                <View>
+                  <View style={[styles.menuItem, { paddingBottom: 4 }]}>
+                    <MaterialCommunityIcons
+                      name="earth"
+                      size={22}
+                      color={iconTheme}
+                    />
+                    <ThemedText style={styles.menuItemText}>
+                      言語: {language.label}
+                    </ThemedText>
+                  </View>
+
+                  {languages.map((lang) => (
+                    <TouchableOpacity
+                      key={lang.code}
+                      style={styles.languageItem}
+                      onPress={() => setLanguage(lang)}
+                    >
+                      <MaterialCommunityIcons
+                        name={
+                          lang.code === language.code
+                            ? "check-circle"
+                            : "checkbox-blank-circle-outline"
+                        }
+                        size={18}
+                        color={iconTheme}
+                      />
+                      <ThemedText style={styles.languageLabel}>
+                        {lang.label}
+                      </ThemedText>
+                    </TouchableOpacity>
+                  ))}
+                </View>
 
                 <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
                   <MaterialCommunityIcons
@@ -218,6 +246,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
+  },
+  languageItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    marginVertical: 2,
+  },
+  languageLabel: {
+    fontSize: 12,
   },
   description: {
     fontSize: 12,

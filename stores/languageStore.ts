@@ -1,11 +1,14 @@
 import { create } from "zustand";
 
 type LanguageState = {
-  language: string;
-  setLanguage: (language: string) => void;
+  language: {
+    code: string;
+    label: string;
+  };
+  setLanguage: (language: { code: string; label: string }) => void;
 };
 
 export const useLanguageStore = create<LanguageState>((set) => ({
-  language: "ja",
+  language: { code: "ja", label: "日本語" },
   setLanguage: (language) => set({ language }),
 }));
