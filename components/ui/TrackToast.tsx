@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
 import { screenWidth } from "@/constants/ScreenSize";
 import { BlurView } from "expo-blur";
@@ -53,13 +53,13 @@ export default function TrackToast() {
 
         {status === "playing" && (
           <TouchableOpacity onPress={() => pauseTrack()}>
-            <Entypo name={"controller-paus"} size={32} color={iconTheme} />
+            <MaterialCommunityIcons name="pause" size={32} color={iconTheme} />
           </TouchableOpacity>
         )}
 
         {status === "pause" && (
           <TouchableOpacity onPress={() => resumeTrack()}>
-            <Entypo name={"controller-play"} size={32} color={iconTheme} />
+            <MaterialCommunityIcons name="play" size={32} color={iconTheme} />
           </TouchableOpacity>
         )}
       </BlurView>
