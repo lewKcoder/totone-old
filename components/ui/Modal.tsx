@@ -99,7 +99,7 @@ export default function Modal() {
                 <View style={styles.logo}>
                   <Image
                     source={require("../../assets/images/icon-totone.png")}
-                    style={{ width: 38, height: 27 }}
+                    style={styles.image}
                   />
                 </View>
 
@@ -119,7 +119,7 @@ export default function Modal() {
                       setColorScheme(isLightMode ? "dark" : "light")
                     }
                     value={isLightMode}
-                    style={{ marginLeft: "auto" }}
+                    style={styles.switch}
                   />
                 </View>
 
@@ -191,6 +191,13 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     fontSize: 16,
+  },
+  image: {
+    width: 38,
+    height: 27,
+  },
+  switch: {
+    marginLeft: "auto",
   },
   menuItem: {
     flexDirection: "row",
