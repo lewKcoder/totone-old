@@ -2,9 +2,8 @@ import { Tabs } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
-import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
-import { Fontisto, MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useColorSchemeStore } from "@/stores/colorSchemeStore";
 
 export default function TabLayout() {
@@ -30,7 +29,11 @@ export default function TabLayout() {
         options={{
           title: "サウンド",
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="hearing" size={24} color={color} />
+            <MaterialCommunityIcons
+              name="ear-hearing"
+              size={24}
+              color={color}
+            />
           ),
         }}
       />
@@ -39,7 +42,7 @@ export default function TabLayout() {
         options={{
           title: "ミュージック",
           tabBarIcon: ({ color }) => (
-            <Fontisto name="music-note" size={24} color={color} />
+            <MaterialCommunityIcons name="music" size={24} color={color} />
           ),
         }}
       />

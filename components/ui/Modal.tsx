@@ -10,10 +10,9 @@ import {
   Dimensions,
   Image,
 } from "react-native";
-import { Entypo } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useColorSchemeStore } from "@/stores/colorSchemeStore";
-import { Feather, FontAwesome } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
 
 export default function Modal() {
@@ -63,7 +62,7 @@ export default function Modal() {
   return (
     <View>
       <TouchableOpacity onPress={openMenu}>
-        <Entypo name="menu" size={32} color={iconTheme} />
+        <MaterialCommunityIcons name="menu" size={32} color={iconTheme} />
       </TouchableOpacity>
 
       <ModalImported
@@ -87,7 +86,6 @@ export default function Modal() {
               },
             ]}
           >
-            {/* 内側のタッチは閉じないようにする */}
             <TouchableWithoutFeedback>
               <Animated.View
                 style={[
@@ -105,12 +103,13 @@ export default function Modal() {
                   />
                 </View>
 
-                <View style={styles.modeToggle}>
-                  <Feather
-                    name="moon"
-                    size={32}
-                    color={!isLightMode ? "orange" : "#3e3e3e"}
+                <View style={styles.menuItem}>
+                  <MaterialCommunityIcons
+                    name="brightness-6"
+                    size={22}
+                    color={iconTheme}
                   />
+                  <ThemedText>テーマ</ThemedText>
 
                   <Switch
                     trackColor={{ false: "#3e3e3e", true: "#3e3e3e" }}
@@ -120,24 +119,38 @@ export default function Modal() {
                       setColorScheme(isLightMode ? "dark" : "light")
                     }
                     value={isLightMode}
-                  />
-
-                  <Feather
-                    name="sun"
-                    size={32}
-                    color={isLightMode ? "red" : "#3e3e3e"}
+                    style={{ marginLeft: "auto" }}
                   />
                 </View>
 
-                <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
-                  <FontAwesome name="inbox" size={28} color={iconTheme} />
-                  <ThemedText style={styles.menuItemText}>
-                    プラン画面
+                <TouchableOpacity onPress={closeMenu}>
+                  <View style={styles.menuItem}>
+                    <MaterialCommunityIcons
+                      name="inbox-full"
+                      size={22}
+                      color={iconTheme}
+                    />
+
+                    <ThemedText style={styles.menuItemText}>
+                      プラン画面
+                    </ThemedText>
+                  </View>
+
+                  <ThemedText style={[styles.description, { paddingTop: 4 }]}>
+                    あなたの現在のプラン：プレミアム
+                  </ThemedText>
+                  <ThemedText style={styles.description}>
+                    全てのサウンドとミュージックを聴くことができます。
                   </ThemedText>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
-                  <Feather name="mail" size={24} color={iconTheme} />
+                  <MaterialCommunityIcons
+                    name="email-outline"
+                    size={22}
+                    color={iconTheme}
+                  />
+
                   <ThemedText style={styles.menuItemText}>
                     お問い合わせ
                   </ThemedText>
@@ -171,23 +184,22 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingLeft: 20,
   },
-  modeToggle: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-  },
   logo: {
     width: 38,
     height: 27,
     marginBottom: 8,
   },
   menuItemText: {
-    fontSize: 14,
+    fontSize: 16,
   },
   menuItem: {
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
+  },
+  description: {
+    fontSize: 12,
+    lineHeight: 18,
   },
   closeButton: {
     marginTop: 20,
