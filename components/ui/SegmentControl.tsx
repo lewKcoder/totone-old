@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { State as SoundFilterState } from "@/stores/soundFilterStore";
 import { State as MusicFilterState } from "@/stores/musicFilterStore";
 import { Tab } from "@/constants/TabMenu";
+import Icon from "../Icon";
 
 export default function SegmentControl(props: {
   tabs: Tab[];
@@ -31,7 +31,7 @@ export default function SegmentControl(props: {
                 });
               }}
             >
-              <MaterialCommunityIcons
+              <Icon
                 name={tab.icon}
                 size={16}
                 color={selectedTab === index ? "white" : themeColor}

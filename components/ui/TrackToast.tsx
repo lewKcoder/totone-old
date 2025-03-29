@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
 import { screenWidth } from "@/constants/ScreenSize";
 import { BlurView } from "expo-blur";
@@ -15,6 +14,7 @@ import { useResumeTrack } from "@/hooks/useResumeTrack";
 import { useStatusStore } from "@/stores/statusStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useColorSchemeStore } from "@/stores/colorSchemeStore";
+import Icon from "../Icon";
 
 export default function TrackToast() {
   const { colorScheme } = useColorSchemeStore();
@@ -53,13 +53,13 @@ export default function TrackToast() {
 
         {status === "playing" && (
           <TouchableOpacity onPress={() => pauseTrack()}>
-            <MaterialCommunityIcons name="pause" size={32} color={iconTheme} />
+            <Icon name="pause" size={32} />
           </TouchableOpacity>
         )}
 
         {status === "pause" && (
           <TouchableOpacity onPress={() => resumeTrack()}>
-            <MaterialCommunityIcons name="play" size={32} color={iconTheme} />
+            <Icon name="play" size={32} />
           </TouchableOpacity>
         )}
       </BlurView>

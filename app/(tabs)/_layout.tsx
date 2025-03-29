@@ -5,6 +5,7 @@ import { HapticTab } from "@/components/HapticTab";
 import { Colors } from "@/constants/Colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useColorSchemeStore } from "@/stores/colorSchemeStore";
+import Icon from "@/components/Icon";
 
 export default function TabLayout() {
   const { colorScheme } = useColorSchemeStore();
@@ -29,11 +30,7 @@ export default function TabLayout() {
         options={{
           title: "サウンド",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="ear-hearing"
-              size={24}
-              color={color}
-            />
+            <Icon name="ear-hearing" size={24} color={color} />
           ),
         }}
       />
@@ -42,7 +39,7 @@ export default function TabLayout() {
         options={{
           title: "ミュージック",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="music" size={24} color={color} />
+            <Icon name="music" size={24} color={color} />
           ),
         }}
       />

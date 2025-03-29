@@ -1,11 +1,8 @@
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import Modal from "./Modal";
+import Modal from "./Modal/Modal";
+import Icon from "../Icon";
 
 export const Header = () => {
-  const theme = useThemeColor("tabIconDefault");
-
   return (
     <View style={styles.container}>
       <Modal />
@@ -16,7 +13,7 @@ export const Header = () => {
       />
 
       <TouchableOpacity>
-        <MaterialCommunityIcons name="timer-outline" size={32} color={theme} />
+        <Icon name="timer-outline" size={32} />
       </TouchableOpacity>
     </View>
   );
