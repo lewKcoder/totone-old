@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
+import { Animated } from "react-native";
 import {
   Modal as ModalImported,
   TouchableOpacity,
@@ -6,8 +7,8 @@ import {
   View,
   StyleSheet,
   Switch,
-  Animated,
   Dimensions,
+  Image,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -16,30 +17,45 @@ import { Feather, FontAwesome } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
 
 export default function Modal() {
+  const { colorScheme, setColorScheme } = useColorSchemeStore();
   const iconTheme = useThemeColor("tabIconDefault");
   const backgroundTheme = useThemeColor("background");
-  const { colorScheme, setColorScheme } = useColorSchemeStore();
   const isLightMode = colorScheme === "light";
 
   const [modalVisible, setModalVisible] = useState(false);
   const screenWidth = Dimensions.get("window").width;
   const slideAnim = useRef(new Animated.Value(-screenWidth)).current;
+  const overlayAnim = useRef(new Animated.Value(0)).current;
 
   const openMenu = () => {
     setModalVisible(true);
-    Animated.timing(slideAnim, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(overlayAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start();
   };
 
   const closeMenu = () => {
-    Animated.timing(slideAnim, {
-      toValue: -screenWidth,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
+    Animated.parallel([
+      Animated.timing(overlayAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: -screenWidth,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
       setModalVisible(false);
     });
   };
@@ -57,17 +73,38 @@ export default function Modal() {
         onRequestClose={closeMenu}
       >
         <TouchableWithoutFeedback onPress={closeMenu}>
-          <View style={styles.modalOverlay}>
+          <Animated.View
+            style={[
+              styles.overlay,
+              {
+                backgroundColor: overlayAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [
+                    "rgba(25, 25, 25, 0)",
+                    "rgba(25, 25, 25, 0.68)",
+                  ],
+                }),
+              },
+            ]}
+          >
+            {/* 内側のタッチは閉じないようにする */}
             <TouchableWithoutFeedback>
               <Animated.View
                 style={[
-                  styles.modalContainer,
+                  styles.container,
                   {
                     backgroundColor: backgroundTheme,
                     transform: [{ translateX: slideAnim }],
                   },
                 ]}
               >
+                <View style={styles.logo}>
+                  <Image
+                    source={require("../../assets/images/icon-totone.png")}
+                    style={{ width: 38, height: 27 }}
+                  />
+                </View>
+
                 <View style={styles.modeToggle}>
                   <Feather
                     name="moon"
@@ -111,7 +148,7 @@ export default function Modal() {
                 </ThemedText>
               </Animated.View>
             </TouchableWithoutFeedback>
-          </View>
+          </Animated.View>
         </TouchableWithoutFeedback>
       </ModalImported>
     </View>
@@ -119,18 +156,18 @@ export default function Modal() {
 }
 
 const styles = StyleSheet.create({
-  modalOverlay: {
+  overlay: {
     flex: 1,
     justifyContent: "center",
   },
-  modalContainer: {
+  container: {
     width: "68%",
     height: "100%",
     borderTopRightRadius: 24,
     borderBottomRightRadius: 24,
     alignSelf: "flex-start",
     gap: 24,
-    paddingTop: 120,
+    paddingTop: 54,
     paddingRight: 20,
     paddingLeft: 20,
   },
@@ -139,8 +176,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 16,
   },
+  logo: {
+    width: 38,
+    height: 27,
+    marginBottom: 8,
+  },
   menuItemText: {
-    fontSize: 16,
+    fontSize: 14,
   },
   menuItem: {
     flexDirection: "row",
