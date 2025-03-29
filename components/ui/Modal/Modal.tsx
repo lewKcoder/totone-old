@@ -79,9 +79,7 @@ export default function Modal() {
               },
             ]}
           >
-            <TouchableWithoutFeedback>
-              <SideMenu slideAnim={slideAnim} closeMenu={closeMenu} />
-            </TouchableWithoutFeedback>
+            <SideMenu slideAnim={slideAnim} closeMenu={closeMenu} />
           </Animated.View>
         </TouchableWithoutFeedback>
       </ModalImported>

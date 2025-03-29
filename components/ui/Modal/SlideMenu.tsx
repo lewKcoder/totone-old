@@ -1,4 +1,4 @@
-import { Animated } from "react-native";
+import { Animated, TouchableWithoutFeedback } from "react-native";
 import { StyleSheet } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useRouter } from "expo-router";
@@ -26,27 +26,30 @@ export default function SideMenu(props: Props) {
   };
 
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        {
-          backgroundColor: backgroundTheme,
-          transform: [{ translateX: slideAnim }],
-        },
-      ]}
-    >
-      <Logo />
+    // イベント伝搬を防止するために空の関数を定義
+    <TouchableWithoutFeedback onPress={() => {}}>
+      <Animated.View
+        style={[
+          styles.container,
+          {
+            backgroundColor: backgroundTheme,
+            transform: [{ translateX: slideAnim }],
+          },
+        ]}
+      >
+        <Logo />
 
-      <ThemeToggle />
+        <ThemeToggle />
 
-      <PlanSection handlePressPlan={handlePressPlan} />
+        <PlanSection handlePressPlan={handlePressPlan} />
 
-      <LanguageSelector />
+        <LanguageSelector />
 
-      <ContactItem closeMenu={closeMenu} />
+        <ContactItem closeMenu={closeMenu} />
 
-      <VersionText />
-    </Animated.View>
+        <VersionText />
+      </Animated.View>
+    </TouchableWithoutFeedback>
   );
 }
 
