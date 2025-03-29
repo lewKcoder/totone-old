@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
-import Entypo from "@expo/vector-icons/Entypo";
+import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useFilterStore } from "@/stores/filterStore";
-import { tabs } from "@/constants/TabMenu";
+import { Tab } from "@/constants/TabMenu";
 
-export default function SegmentControl() {
+export default function SegmentControl(props: { tabs: Tab[] }) {
+  const { tabs } = props;
   const [selectedTab, setSelectedTab] = useState(0);
   const themeColor = useThemeColor("tabIconDefault");
   const { setFilter } = useFilterStore();
@@ -27,7 +28,7 @@ export default function SegmentControl() {
                 });
               }}
             >
-              <Entypo
+              <MaterialCommunityIcons
                 name={tab.icon}
                 size={16}
                 color={selectedTab === index ? "white" : themeColor}
@@ -48,15 +49,13 @@ export default function SegmentControl() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 12,
-    marginBottom: 12,
+    marginBottom: 8,
   },
   content: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginTop: 12,
-    marginBottom: 12,
-    gap: 12,
+    marginBottom: 6,
+    gap: 8,
   },
   tab: {
     flexDirection: "row",

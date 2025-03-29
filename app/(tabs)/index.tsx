@@ -14,6 +14,7 @@ import { usePlayTrack } from "@/hooks/usePlayTrack";
 import { useTrackRefStore } from "@/stores/trackRefStore";
 import { useFilterStore } from "@/stores/filterStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { soundTabs } from "@/constants/TabMenu";
 
 export default function HomeScreen() {
   const { $track } = useTrackRefStore();
@@ -41,7 +42,7 @@ export default function HomeScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
-      <SegmentControl />
+      <SegmentControl tabs={soundTabs} />
 
       <View>
         <ThemedText style={styles.title}>{filter.label}</ThemedText>

@@ -1,7 +1,8 @@
+import { Tab } from "@/constants/TabMenu";
 import { create } from "zustand";
 
 type State = {
-  key: "all" | "nature" | "artificial";
+  key: Tab["filter"];
   label: string;
 };
 
