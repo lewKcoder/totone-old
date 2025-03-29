@@ -14,6 +14,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useColorSchemeStore } from "@/stores/colorSchemeStore";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
+import { useRouter } from "expo-router";
 
 export default function Modal() {
   const { colorScheme, setColorScheme } = useColorSchemeStore();
@@ -25,6 +26,13 @@ export default function Modal() {
   const screenWidth = Dimensions.get("window").width;
   const slideAnim = useRef(new Animated.Value(-screenWidth)).current;
   const overlayAnim = useRef(new Animated.Value(0)).current;
+
+  const router = useRouter();
+
+  const handlePressPlan = () => {
+    closeMenu();
+    router.push("/plan");
+  };
 
   const openMenu = () => {
     setModalVisible(true);
@@ -123,7 +131,7 @@ export default function Modal() {
                   />
                 </View>
 
-                <TouchableOpacity onPress={closeMenu}>
+                <TouchableOpacity onPress={handlePressPlan}>
                   <View style={styles.menuItem}>
                     <MaterialCommunityIcons
                       name="inbox-full"
@@ -131,9 +139,7 @@ export default function Modal() {
                       color={iconTheme}
                     />
 
-                    <ThemedText style={styles.menuItemText}>
-                      プラン画面
-                    </ThemedText>
+                    <ThemedText style={styles.menuItemText}>プラン</ThemedText>
                   </View>
 
                   <ThemedText style={[styles.description, { paddingTop: 4 }]}>
@@ -142,6 +148,15 @@ export default function Modal() {
                   <ThemedText style={styles.description}>
                     全てのサウンドとミュージックを聴くことができます。
                   </ThemedText>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
+                  <MaterialCommunityIcons
+                    name="earth"
+                    size={22}
+                    color={iconTheme}
+                  />
+                  <ThemedText style={styles.menuItemText}>言語</ThemedText>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>

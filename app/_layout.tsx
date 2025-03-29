@@ -35,6 +35,9 @@ export default function RootLayout() {
             header: () => <Header />,
           }}
         />
+
+        <Stack.Screen name="plan" options={{ headerShown: false }} />
+
         <Stack.Screen name="+not-found" />
       </Stack>
 
