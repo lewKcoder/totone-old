@@ -7,6 +7,7 @@ export default function PlanScreen() {
   return (
     <View>
       <Text>プラン画面です</Text>
+
       <Button title="戻る" onPress={() => router.back()} />
     </View>
   );

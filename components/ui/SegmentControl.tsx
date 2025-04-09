@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { ThemedText } from "../ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { State as SoundFilterState } from "@/stores/soundFilterStore";
 import { State as MusicFilterState } from "@/stores/musicFilterStore";
 import { Tab } from "@/constants/TabMenu";
 import Icon from "../Icon";
+import { ScrollView } from "./ScrollView";
 
 export default function SegmentControl(props: {
   tabs: Tab[];
@@ -17,7 +18,7 @@ export default function SegmentControl(props: {
 
   return (
     <View style={styles.container}>
-      <ScrollView horizontal>
+      <ScrollView isHorizontal>
         <View style={styles.content}>
           {tabs.map((tab, index) => (
             <TouchableOpacity
@@ -52,26 +53,23 @@ export default function SegmentControl(props: {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 8,
     marginBottom: 8,
   },
   content: {
     flexDirection: "row",
     justifyContent: "space-around",
     marginBottom: 6,
-    gap: 8,
   },
   tab: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 8,
-    paddingTop: 2,
+    gap: 6,
+    paddingTop: 4,
     paddingRight: 16,
     paddingLeft: 16,
-    paddingBottom: 2,
-    minWidth: 100,
-    borderWidth: 1,
-    borderColor: "#4E5D74",
+    paddingBottom: 4,
     borderRadius: 99,
   },
   selectedTab: {

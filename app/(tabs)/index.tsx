@@ -1,10 +1,4 @@
-import {
-  Image,
-  StyleSheet,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
 import { useEffect } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import SegmentControl from "@/components/ui/SegmentControl";
@@ -15,6 +9,7 @@ import { useTrackRefStore } from "@/stores/trackRefStore";
 import { useSoundFilterStore } from "@/stores/soundFilterStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { soundTabs } from "@/constants/TabMenu";
+import { ScrollView } from "@/components/ui/ScrollView";
 
 export default function HomeScreen() {
   const { $track } = useTrackRefStore();
@@ -41,7 +36,7 @@ export default function HomeScreen() {
       : mockData.tracks.filter((item) => item.category === soundFilter.key);
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollView}>
+    <ScrollView isContainer>
       <SegmentControl tabs={soundTabs} setFilter={setSoundFilter} />
 
       <View>

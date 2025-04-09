@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { FunctionComponent, ReactNode, useEffect } from "react";
 import {
   ThemeProvider,
   DefaultTheme,
@@ -7,7 +7,9 @@ import {
 import { useColorScheme } from "./useColorScheme";
 import { useColorSchemeStore } from "@/stores/colorSchemeStore";
 
-export const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const Provider: FunctionComponent<{ children: ReactNode }> = ({
+  children,
+}) => {
   const colorSchemeOrigin = useColorScheme();
   const { colorScheme, setColorScheme } = useColorSchemeStore();
 
