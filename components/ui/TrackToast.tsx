@@ -12,13 +12,11 @@ import { usePlayingTrackStore } from "@/stores/playingTrackStore";
 import { usePauseTrack } from "@/hooks/usePauseTrack";
 import { useResumeTrack } from "@/hooks/useResumeTrack";
 import { useStatusStore } from "@/stores/statusStore";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { useColorSchemeStore } from "@/stores/colorSchemeStore";
 import Icon from "../Icon";
 
 export default function TrackToast() {
   const { colorScheme } = useColorSchemeStore();
-  const iconTheme = useThemeColor("tabIconDefault");
   const { status } = useStatusStore();
   const { playingTrack } = usePlayingTrackStore();
   const pauseTrack = usePauseTrack();

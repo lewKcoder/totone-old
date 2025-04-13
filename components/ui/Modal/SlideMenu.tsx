@@ -25,6 +25,11 @@ export default function SideMenu(props: Props) {
     router.push("/plan");
   };
 
+  const handlePressContact = () => {
+    closeMenu();
+    router.push("/contact");
+  };
+
   return (
     // イベント伝搬を防止するために空の関数を定義
     <TouchableWithoutFeedback onPress={() => {}}>
@@ -45,7 +50,7 @@ export default function SideMenu(props: Props) {
 
         <LanguageSelector />
 
-        <ContactItem closeMenu={closeMenu} />
+        <ContactItem handlePressContact={handlePressContact} />
 
         <VersionText />
       </Animated.View>

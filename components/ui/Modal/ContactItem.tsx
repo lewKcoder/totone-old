@@ -3,14 +3,14 @@ import { ThemedText } from "../../ThemedText";
 import Icon from "@/components/Icon";
 
 type Props = {
-  closeMenu: () => void;
+  handlePressContact: () => void;
 };
 
 export default function ContactItem(props: Props) {
-  const { closeMenu } = props;
+  const { handlePressContact } = props;
 
   return (
-    <TouchableOpacity style={styles.container} onPress={closeMenu}>
+    <TouchableOpacity style={styles.container} onPress={handlePressContact}>
       <Icon name="email-outline" size={22} />
       <ThemedText style={styles.content}>お問い合わせ</ThemedText>
     </TouchableOpacity>
