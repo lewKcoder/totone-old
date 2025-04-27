@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { TextInput, Button, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { ThemedView } from "@/components/ThemedView";
+import { ThemedText } from "@/components/ThemedText";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export default function ContactScreen() {
   const router = useRouter();
+  const textColor = useThemeColor("text");
+  const borderColor = useThemeColor("tabIconDefault");
 
   // フォーム入力のステート
   const [name, setName] = useState("");
@@ -28,42 +33,44 @@ export default function ContactScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>お問い合わせ</Text>
+    <ThemedView useAppBackground style={styles.container}>
+      <ThemedText style={styles.title}>お問い合わせ</ThemedText>
 
-      <Text style={styles.label}>お名前</Text>
+      <ThemedText style={styles.label}>お名前</ThemedText>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { borderColor, color: textColor }]}
         value={name}
         onChangeText={(text) => setName(text)}
         placeholder="山田 太郎"
+        placeholderTextColor={borderColor}
       />
 
-      <Text style={styles.label}>メールアドレス</Text>
+      <ThemedText style={styles.label}>メールアドレス</ThemedText>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { borderColor, color: textColor }]}
         value={email}
         onChangeText={(text) => setEmail(text)}
         placeholder="example@example.com"
         keyboardType="email-address"
+        placeholderTextColor={borderColor}
       />
 
-      <Text style={styles.label}>お問い合わせ内容</Text>
+      <ThemedText style={styles.label}>お問い合わせ内容</ThemedText>
       <TextInput
-        style={[styles.input, { height: 100 }]}
+        style={[styles.input, { height: 100, borderColor, color: textColor }]}
         value={message}
         onChangeText={(text) => setMessage(text)}
         placeholder="お問い合わせ内容を入力してください"
         multiline
+        placeholderTextColor={borderColor}
       />
 
       <Button title="送信" onPress={handleSend} />
 
-      {/* 戻るボタン */}
-      <View style={{ marginTop: 20 }}>
+      <ThemedView style={{ marginTop: 20 }}>
         <Button title="戻る" onPress={() => router.back()} />
-      </View>
-    </View>
+      </ThemedView>
+    </ThemedView>
   );
 }
 
@@ -71,7 +78,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f2f2f2",
   },
   title: {
     fontSize: 22,
@@ -85,7 +91,6 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
     padding: 8,
     fontSize: 14,
     borderRadius: 4,

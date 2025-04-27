@@ -10,6 +10,7 @@ export const Colors = {
   light: {
     text: "#2D2D2D",
     background: "#fff",
+    appBackground: "#F2F2F2",
     tint: tintColorLight,
     tabIconDefault: "#2D2D2D",
     tabIconSelected: tintColorLight,
@@ -17,6 +18,7 @@ export const Colors = {
   dark: {
     text: "#ECEDEE",
     background: "#151718",
+    appBackground: "#000",
     tint: tintColorDark,
     tabIconDefault: "#9BA1A6",
     tabIconSelected: tintColorDark,

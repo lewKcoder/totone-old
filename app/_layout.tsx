@@ -9,15 +9,14 @@ import { useEffect, useRef } from "react";
 import { Audio } from "expo-av";
 import TrackToast from "@/components/ui/TrackToast";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useColorSchemeStore } from "@/stores/colorSchemeStore";
 import { usePathname } from "expo-router";
 import { usePauseTrack } from "@/hooks/usePauseTrack";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function RootLayout() {
   useInitScreen();
   const { status, setTrackRef } = usePlayerStore();
   const pathname = usePathname();
-  const { colorScheme } = useColorSchemeStore();
   const pauseTrack = usePauseTrack();
 
   const $track = useRef<Audio.Sound | null>(null);
@@ -38,35 +37,31 @@ export default function RootLayout() {
 
   return (
     <Provider>
-      <SafeAreaView
-        edges={["top"]}
-        style={{
-          flex: 1,
-          backgroundColor: colorScheme === "dark" ? "#000" : "#f2f2f2",
-        }}
-      >
-        <Stack>
-          <Stack.Screen
-            name="(tabs)"
-            options={{
-              headerShown: true,
-              header: () => <Header />,
-            }}
-          />
+      <ThemedView useAppBackground style={{ flex: 1 }}>
+        <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
+          <Stack>
+            <Stack.Screen
+              name="(tabs)"
+              options={{
+                headerShown: true,
+                header: () => <Header />,
+              }}
+            />
 
-          <Stack.Screen name="plan" options={{ headerShown: false }} />
+            <Stack.Screen name="plan" options={{ headerShown: false }} />
 
-          <Stack.Screen name="contact" options={{ headerShown: false }} />
+            <Stack.Screen name="contact" options={{ headerShown: false }} />
 
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </SafeAreaView>
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </SafeAreaView>
 
-      {!(pathname === "/plan" || pathname === "/contact") && status && (
-        <TrackToast />
-      )}
+        {!(pathname === "/plan" || pathname === "/contact") && status && (
+          <TrackToast />
+        )}
 
-      <StatusBar style="auto" />
+        <StatusBar style="auto" />
+      </ThemedView>
     </Provider>
   );
 }
