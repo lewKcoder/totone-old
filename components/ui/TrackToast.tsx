@@ -11,13 +11,13 @@ import { BlurView } from "expo-blur";
 import { usePlayingTrackStore } from "@/stores/playingTrackStore";
 import { usePauseTrack } from "@/hooks/usePauseTrack";
 import { useResumeTrack } from "@/hooks/useResumeTrack";
-import { useStatusStore } from "@/stores/statusStore";
+import { usePlayerStore } from "@/stores/playerStore";
 import { useColorSchemeStore } from "@/stores/colorSchemeStore";
 import Icon from "../Icon";
 
 export default function TrackToast() {
   const { colorScheme } = useColorSchemeStore();
-  const { status } = useStatusStore();
+  const { status } = usePlayerStore();
   const { playingTrack } = usePlayingTrackStore();
   const pauseTrack = usePauseTrack();
   const resumeTrack = useResumeTrack();

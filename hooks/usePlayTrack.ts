@@ -1,14 +1,12 @@
 import { useErrorStore } from "@/stores/errorStore";
 import { usePlayingTrackStore } from "@/stores/playingTrackStore";
-import { useStatusStore } from "@/stores/statusStore";
-import { useTrackRefStore } from "@/stores/trackRefStore";
+import { usePlayerStore } from "@/stores/playerStore";
 import { Audio } from "expo-av";
 import { ImageSourcePropType } from "react-native";
 
 export const usePlayTrack = () => {
-  const { $track } = useTrackRefStore();
+  const { $track, setStatus } = usePlayerStore();
   const { setError } = useErrorStore();
-  const { setStatus } = useStatusStore();
   const { setPlayingTrack } = usePlayingTrackStore();
 
   return async (params: {

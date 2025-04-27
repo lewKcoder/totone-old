@@ -4,8 +4,7 @@ import "react-native-reanimated";
 import { Provider } from "@/hooks/useProvider";
 import { Header } from "@/components/ui/Header";
 import { useInitScreen } from "@/hooks/useInitScreen";
-import { useStatusStore } from "@/stores/statusStore";
-import { useTrackRefStore } from "@/stores/trackRefStore";
+import { usePlayerStore } from "@/stores/playerStore";
 import { useEffect, useRef } from "react";
 import { Audio } from "expo-av";
 import TrackToast from "@/components/ui/TrackToast";
@@ -16,9 +15,8 @@ import { usePauseTrack } from "@/hooks/usePauseTrack";
 
 export default function RootLayout() {
   useInitScreen();
-  const { status, setStatus } = useStatusStore();
+  const { status, setTrackRef } = usePlayerStore();
   const pathname = usePathname();
-  const { setTrackRef } = useTrackRefStore();
   const { colorScheme } = useColorSchemeStore();
   const pauseTrack = usePauseTrack();
 
@@ -34,7 +32,6 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (pathname === "/plan" || pathname === "/contact") {
-      setStatus("pause");
       pauseTrack();
     }
   }, [pathname]);

@@ -1,11 +1,9 @@
 import { useErrorStore } from "@/stores/errorStore";
-import { useStatusStore } from "@/stores/statusStore";
-import { useTrackRefStore } from "@/stores/trackRefStore";
+import { usePlayerStore } from "@/stores/playerStore";
 
 export const usePauseTrack = () => {
-  const { $track } = useTrackRefStore();
+  const { $track, setStatus } = usePlayerStore();
   const { setError } = useErrorStore();
-  const { setStatus } = useStatusStore();
 
   return async () => {
     if ($track && $track.current) {
