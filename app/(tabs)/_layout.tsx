@@ -3,7 +3,6 @@ import React from "react";
 import { Platform } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
 import { Colors } from "@/constants/Colors";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useColorSchemeStore } from "@/stores/colorSchemeStore";
 import Icon from "@/components/Icon";
 
