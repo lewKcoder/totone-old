@@ -1,18 +1,46 @@
-import { Button, StyleSheet } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
+import { PlanCard } from "@/components/ui/SubscriptionPlan";
 
 export default function PlanScreen() {
   const router = useRouter();
 
+  const handleUpgrade = () => {
+    // TODO: サブスクリプション購入処理
+    console.log("プレミアムプランへアップグレード");
+  };
+
   return (
     <ThemedView useAppBackground style={styles.container}>
-      <ThemedText style={styles.title}>プラン画面です</ThemedText>
+      <ScrollView style={styles.scrollView}>
+        <ThemedText style={styles.title}>サブスクリプション</ThemedText>
 
-      <ThemedView style={styles.buttonContainer}>
-        <Button title="戻る" onPress={() => router.back()} />
-      </ThemedView>
+        <PlanCard
+          name="プレミアム"
+          price="¥ 500"
+          period="月"
+          features={[
+            "全ての音と音楽が再生できます",
+            "将来追加される新機能も制限なく利用できます",
+          ]}
+          action="アップグレードする"
+          isPremium
+          onPress={handleUpgrade}
+        />
+
+        <PlanCard
+          name="フリー"
+          price="¥ 0"
+          period="月"
+          features={[
+            "フリープランで楽しめる全ての音と音楽を再生できます",
+            "将来追加される新機能を制限付きで利用できます",
+          ]}
+          note="プレミアムプランからフリープランに移行する場合は、本端末のサブスクリプションから操作ください"
+        />
+      </ScrollView>
     </ThemedView>
   );
 }
@@ -20,14 +48,14 @@ export default function PlanScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollView: {
+    flex: 1,
     padding: 20,
   },
   title: {
-    fontSize: 22,
-    marginBottom: 16,
+    fontSize: 24,
     fontWeight: "bold",
-  },
-  buttonContainer: {
-    marginTop: 20,
+    marginBottom: 24,
   },
 });
